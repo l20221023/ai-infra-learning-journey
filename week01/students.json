@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Zhang San",
+        "scores": [
+            11,
+            31,
+            51,
+            71
+        ],
+        "average": 41.0
+    },
+    {
+        "name": "Li Si",
+        "scores": [
+            31,
+            51,
+            71,
+            91
+        ],
+        "average": 61.0
+    },
+    {
+        "name": "Wang Wu",
+        "scores": [
+            91,
+            11,
+            21
+        ],
+        "average": 41.0
+    }
+]
