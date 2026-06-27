@@ -39,11 +39,13 @@ test_loader = DataLoader(dataset, batch_size=2, shuffle = False)
 input_dim = len(dataset.vocab)
 hidden_dim = 8
 output_dim = 2
+dropout = 0.2
 
 model = SentimentMLP(
     input_dim = input_dim, 
     hidden_dim= hidden_dim, 
-    output_dim= output_dim
+    output_dim= output_dim,
+    dropout = dropout
 )
 
 
@@ -54,6 +56,7 @@ epoch_loss_sum = 0.0
 loss_history = []
 accuracy_history = []
 num_epochs = 200
+best_train_loss = float("inf")
 
 for epoch in range(num_epochs):
     model.train()
@@ -99,21 +102,35 @@ for epoch in range(num_epochs):
             f"Loss: {average_loss:.4f}, "
             f"Accuracy: {epoch_accuracy:.4f}"
         )
+
+    if average_loss < best_train_loss:
+        best_train_loss = average_loss
+
+        checkpoint = {
+            "epoch": epoch + 1,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "vocab": dataset.vocab,
+            "input_dim": input_dim,
+            "hidden_dim": hidden_dim,
+            "output_dim": output_dim,
+            "best_train_loss": best_train_loss,
+            "loss_history": loss_history.copy(),
+            "accuracy_history": accuracy_history.copy(),
+        }
+
+        torch.save(checkpoint, "best_checkpoint.pth")
+
 test_accuracy = evaluate(model, test_loader)
 
 print(f"测试机 Accuracy:{ test_accuracy:.4f}")
 
+
 plt.figure()
-
-plt.plot(
-    range(1, num_epochs + 1),
-    loss_history,
-)
-
+plt.plot(range(1, num_epochs + 1),loss_history)
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.title("Training Loss Curve")
-
 plt.savefig(
     "loss_curve.png",
     dpi =  150,
@@ -122,25 +139,4 @@ plt.savefig(
 
 plt.close()
 
-checkpoint = {
-    "model_state_dict": model.state_dict(),
-    "optimizer_state_dict": optimizer.state_dict(),
-    "vocab": dataset.vocab,
-    "input_dim": input_dim,
-    "hidden_dim": hidden_dim,
-    "output_dim": output_dim,
-    "num_epochs": num_epochs,
-    "loss_history": loss_history,
-    "accuracy_history": accuracy_history,
-    "test_accuracy": test_accuracy,
-}
-
-torch.save(
-    checkpoint,
-    "checkpoint.pth",
-)
-
 print("模型已保存到 checkpoint.pth")
-
-if __name__ == "__main__":
-    main()
