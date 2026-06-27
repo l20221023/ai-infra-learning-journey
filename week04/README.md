@@ -1,24 +1,30 @@
 # Sentiment Classification with MLP and Bag-of-Words
 
-这是一个基于 PyTorch 实现的文本情感分类项目。
+# 基于 MLP 和 Bag-of-Words 的文本情感分类
 
-项目使用 Bag-of-Words 将文本转换为固定长度向量，
-然后使用多层感知机 MLP 判断文本情感属于积极还是消极。
+## 项目简介
+
+本项目使用 Bag-of-Words 将英文评论转换为固定长度向量，
+并使用 PyTorch MLP 完成积极与消极二分类。
+
+## 数据标签
+
+- 0：消极
+- 1：积极
+
+## 模型结构
+
+Bag-of-Words
+→ Linear
+→ ReLU
+→ Linear
+→ 两个类别 logits
 
 ## 项目结构
 
-- `data/`：训练集和测试集
-- `src/preprocess.py`：文本预处理和 Bag-of-Words
-- `src/dataset.py`：PyTorch Dataset
-- `src/model.py`：MLP 模型
-- `main.py`：数据与模型 forward 测试
+说明各文件用途。
 
-## 标签定义
-
-- `0`：消极
-- `1`：积极
-
-## 运行方式
+## 运行方法
 
 ```bash
 python main.py
