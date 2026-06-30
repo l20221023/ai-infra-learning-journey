@@ -11,7 +11,7 @@ class SentimentMLP(nn.Module):
 
         self.fc1 = nn.Linear(input_dim, hidden_dim)
         self.relu = nn.ReLU()
-        self.droput = nn.Dropout(dropout)
+        self.droput = nn.Dropout(p=dropout)
         self.fc2 = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
